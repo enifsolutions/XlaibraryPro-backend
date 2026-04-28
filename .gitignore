@@ -1,0 +1,11 @@
+bin/
+obj/
+*.user
+.vs/
+publish_test/
+*.dll
+*.exe
+!testhost.dll
+!testhost.exe
+appsettings.json
+!appsettings.Development.json
