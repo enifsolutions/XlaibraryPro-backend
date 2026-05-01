@@ -22,13 +22,24 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("LMSPolicy", policy =>
     {
-        policy.WithOrigins(
-                builder.Configuration.GetSection("AllowedOrigins").Get<string[]>()
-                    ?? new[] { "http://localhost:3000" })
+        policy.AllowAnyOrigin()
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
+////builder.Services.AddCors(options =>
+////{
+////    options.AddPolicy("LMSPolicy", policy =>
+////    {
+////        policy.WithOrigins(
+////                builder.Configuration.GetSection("AllowedOrigins").Get<string[]>()
+////                    ?? new[] { "http://localhost:3000" })
+////              .AllowAnyHeader()
+////              .AllowAnyMethod();
+////    });
+////});
+
+Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
 
 var app = builder.Build();
 
@@ -38,6 +49,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseStaticFiles();
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors("LMSPolicy");
 app.UseAuthentication();

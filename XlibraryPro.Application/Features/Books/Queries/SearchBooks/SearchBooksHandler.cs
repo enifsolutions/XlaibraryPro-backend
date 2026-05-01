@@ -13,7 +13,7 @@ public class SearchBooksHandler(IBookRepository repo) : IRequestHandler<SearchBo
         {
             BookId          = b.Id,
             Title           = b.Title,
-            Isbn            = b.Isbn?.Value,
+            Isbn            = b.Isbn,
             PublicationYear = b.PublicationYear
         });
     }

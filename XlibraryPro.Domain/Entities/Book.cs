@@ -12,7 +12,7 @@ public class Book : BaseEntity, IAuditableEntity
 {
     public string  Title       { get; private set; }
     public string? Description { get; private set; }
-    public Isbn?   Isbn        { get; private set; }
+    public string? Isbn        { get; set; }
     public int?    Pages       { get; private set; }
 
     public long PrimaryLanguageId { get; private set; }
@@ -26,6 +26,12 @@ public class Book : BaseEntity, IAuditableEntity
     public string? EditionStatement   { get; private set; }
     public string? Notes              { get; private set; }
 
+    public string? LanguageName { get; set; }
+    public string? BookTypeName { get; set; }
+    public string? DeweyNumber { get; set; }
+    public string? DeweyCaption { get; set; }
+
+    public string? PublisherName { get; set; }
     public DateTime  CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
 
@@ -42,7 +48,7 @@ public class Book : BaseEntity, IAuditableEntity
     public BookTypeEntity? BookType       { get; private set; }
     public DeweyClass?    DeweyClass      { get; private set; }
     public Publisher?     Publisher       { get; private set; }
-
+    public string? CoverImageUrl { get; set; }
     private Book() : base() { Title = string.Empty; }
 
     public Book(long id, string title, long primaryLanguageId, long bookTypeId,
@@ -55,7 +61,7 @@ public class Book : BaseEntity, IAuditableEntity
     {
         SetTitle(title);
         SetForeignKeys(primaryLanguageId, bookTypeId, deweyId, publisherId);
-        SetIsbn(isbn);
+        Isbn = isbn;
         UpdateDetails(description, pages, placeOfPublication, publicationYear,
                       copyrightYear, editionStatement, notes);
         CreatedAt = DateTime.UtcNow;
@@ -69,11 +75,7 @@ public class Book : BaseEntity, IAuditableEntity
         Touch();
     }
 
-    public void SetIsbn(string? isbn)
-    {
-        Isbn = ValueObjects.Isbn.TryCreate(isbn);
-        Touch();
-    }
+    
 
     public void SetForeignKeys(long languageId, long bookTypeId, long deweyId, long publisherId)
     {
@@ -128,7 +130,8 @@ public class Book : BaseEntity, IAuditableEntity
     public void RemoveGenre(long genreId)
     {
         var entry = _genres.FirstOrDefault(g => g.GenreId == genreId);
-        if (entry != null) _genres.Remove(entry);
+ 
+       if (entry != null) _genres.Remove(entry);
     }
 
     public BookCopy AddCopy(long copyId, string barcode, long bookStatusId, long shelfTypeId,

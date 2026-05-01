@@ -1,4 +1,6 @@
 using XlibraryPro.Domain.Entities;
+using XlibraryPro.Domain.Models;
+
 
 namespace XlibraryPro.Domain.Interfaces;
 
@@ -15,11 +17,15 @@ public interface IBookRepository
     Task<IEnumerable<Book>> GetByGenreAsync(long genreId, CancellationToken ct = default);
     Task<IEnumerable<Book>> GetByPublisherAsync(long publisherId, CancellationToken ct = default);
     Task<IEnumerable<Book>> GetByDeweyClassAsync(long deweyId, CancellationToken ct = default);
-    Task AddAsync(Book book, CancellationToken ct = default);
+    Task<long> AddAsync(Book book, CancellationToken ct = default);
     Task UpdateAsync(Book book, CancellationToken ct = default);
     Task DeleteAsync(long id, CancellationToken ct = default);
     Task<bool> ExistsAsync(long id, CancellationToken ct = default);
     Task<bool> IsbnExistsAsync(string isbn, long? excludeBookId = null, CancellationToken ct = default);
+    Task<IEnumerable<BookAuthorModel>> GetAuthorsAsync(long bookId, CancellationToken ct = default);
+    Task<IEnumerable<BookGenreModel>> GetGenresAsync(long bookId, CancellationToken ct = default);
+    Task SyncAuthorsAsync(long bookId, IEnumerable<long> authorIds, CancellationToken ct = default);
+    Task SyncGenresAsync(long bookId, IEnumerable<long> genreIds, CancellationToken ct = default);
 }
 
 // ── BookCopy ──────────────────────────────────────────────────────────────────

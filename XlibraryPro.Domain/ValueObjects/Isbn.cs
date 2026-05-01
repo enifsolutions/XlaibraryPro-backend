@@ -35,8 +35,9 @@ public sealed class Isbn
     public static Isbn? TryCreate(string? isbn)
     {
         if (string.IsNullOrWhiteSpace(isbn)) return null;
-        try { return Create(isbn); }
-        catch { return null; }
+        // Store as-is without strict checksum validation
+        // Libraries often use non-standard identifiers in the ISBN field
+        return new Isbn(isbn.Trim());
     }
 
     private static bool IsValidIsbn10(string isbn)
